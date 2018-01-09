@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html ng-app="myApp" ng-controller="mainCtrl">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/angular.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<!--1，书写格式
+		ng-repeat=”item in itemList | orderBy:p1:p2” 
+		参数p1可以是字段名或自定义函数，p2指是否逆序，默认是false,既不逆序-->
+		<ul id="" >
+			<li value=""  ng-repeat="item in itemList | orderBy:'id':false">
+				{{item.id+"  "+item.name}}
+			</li>
+			
+		</ul>
+		 <!--2，自定义排序:
+		controller中设置自定义函数，函数接受参数为当前的item，需要返回一个数值代表该item的顺序-->
+		
+		<ul id="" ng-model="val" >
+			<li value=""  ng-repeat="item in itemList | orderBy:orderIt">
+				{{item.id+"  "+item.name}}
+			</li>
+			
+		</ul>
+		<!--3，多字段排序：
+		如果单个字段排序不能满足需求，orderBy还支持多字段排序，方法如下
+		第一个参数传递数组，可以是自定义函数或字段名，字段名前面加“-”，代表倒排序。
+		-->
+		<ul id="" ng-model="val" >
+			<li value=""  ng-repeat="item in itemList | orderBy:[orderIt,'name','-amount']">
+				{{item.id+"  "+item.name +" "+item.amount}}
+			</li>
+			
+		</ul>
+	</body>
+	<script type="text/javascript">
+		angular.module("myApp",[])
+		.controller("mainCtrl",["$scope",function($scope){
+			$scope.itemList=[{id:201,name:'abc',amount:100},{id:100,name:'zdb',amount:100}, 
+			{id:10,name:'xxx',amount:200},{id:80,name:'231',amount:1020}, 
+			{id:50,name:'ppp',amount:20},{id:1,name:'hhh',amount:1100}]; 
+			$scope.orderIt=function(item){ 
+				//indexof()返回字符串内第一次出现子字符串的字符位置  -1没有出现 0表示在第一个位置出现
+			if(item.name.indexOf('h')===0){
+				return 0;
+			}
+			else{
+				return 1;
+				}
+			}
+		}])
+	</script>
+</html>
+
